@@ -8,6 +8,7 @@ namespace Internship.Tracking.Api.Controllers
     [ApiController]
     public class ApiBaseController : ControllerBase
     {
+
         
 
     }

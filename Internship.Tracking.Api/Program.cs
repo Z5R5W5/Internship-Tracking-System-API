@@ -2,11 +2,17 @@
 using FluentValidation;
 using Internship.Application;
 using Internship.Application.Behaviors;
+using Internship.Domain.Models.identity;
 using Internship.Infrastructure.Data;
+using Internship.Infrastructure.Identity;
 using Internship.Tracking.Api.Extentions;
 using Internship.Tracking.Api.Middlewares;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+
 
 namespace Internship.Tracking.Api
 {
@@ -20,6 +26,33 @@ namespace Internship.Tracking.Api
 
             builder.Services.AddDbContext<InternshipDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("InternshipDbConnection")));
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("InternShipIdentityDBConnection")));
+
+            builder.Services.AddIdentity<AppUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders();
+
+            // JWT Authentication Dependencies
+            builder.Services.AddAuthentication(options => {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = builder.Configuration["JsonWebToken:issuer"],
+                        ValidateAudience = true,
+                        ValidAudience = builder.Configuration["JsonWebToken:audience"],
+                        ValidateLifetime = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JsonWebToken:key"]))
+
+
+                    };
+                });
 
             //Mediator Dependencies
             builder.Services.AddMediatR(cfg =>
@@ -63,6 +96,8 @@ namespace Internship.Tracking.Api
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
