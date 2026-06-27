@@ -1,6 +1,7 @@
 ﻿using Internship.Application.Features.Company.Command.Create;
 using Internship.Application.Features.Company.Command.Delete;
 using Internship.Application.Features.Company.Command.Update;
+using Internship.Application.Features.Company.Dtos;
 using Internship.Application.Features.Company.Queries.Get;
 using Internship.Application.Features.Company.Queries.List;
 using Internship.Tracking.Api.Extentions;
@@ -26,13 +27,14 @@ namespace Internship.Tracking.Api.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteCompany(int Id)
+        public async Task<IActionResult> DeleteCompany(string Id)
         {
             var command = new DeleteCompanyCommand(Id);
             var deletedCompanyId = await _mediator.Send(command);
             return Ok(deletedCompanyId);
         }
         [HttpGet]
+        [ProducesResponseType(typeof(List<CompanyResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllCompanies()
         {
             var query = new ListCompaniesQuery();
@@ -40,7 +42,8 @@ namespace Internship.Tracking.Api.Controllers
             return results.ToActionResult(Ok);
         }
         [HttpGet("{Id}")]
-        public async Task<IActionResult> GetCompanyById(int Id)
+        [ProducesResponseType(typeof(CompanyResponse), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetCompanyById(string Id)
         {
             var query = new GetCompanyQuery(Id);
             var result = await _mediator.Send(query);
@@ -48,7 +51,7 @@ namespace Internship.Tracking.Api.Controllers
         }
 
         [HttpPut("{Id}")]
-        public async Task<IActionResult> UpdateCompany(int Id, [FromBody] UpdateCompanyCommand command)
+        public async Task<IActionResult> UpdateCompany(string Id, [FromBody] UpdateCompanyCommand command)
         {
             if (Id != command.Id)
             {

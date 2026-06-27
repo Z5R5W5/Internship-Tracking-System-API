@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace Internship.Application.Features.Account.Login
 {
-    public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<string>>
+    public class LogoutCommandHandler : IRequestHandler<LogoutCommand, Result<string>>
     {
         private readonly IIdentityService _identityService;
-        public LoginCommandHandler(IIdentityService identityService) {
+        public LogoutCommandHandler(IIdentityService identityService)
+        {
             _identityService = identityService;
         }
-        public async Task<Result<string>> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(LogoutCommand request, CancellationToken cancellationToken)
         {
-            return await _identityService.LoginAsync(request.Email, request.Password,request.Role);
+            return await _identityService.LogoutAsync();
         }
     }
 }

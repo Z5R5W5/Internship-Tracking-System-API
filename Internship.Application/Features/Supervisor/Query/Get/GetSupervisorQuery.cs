@@ -10,5 +10,5 @@ using System.Threading.Tasks;
 namespace Internship.Application.Features.Supervisor.Query.Get
 {
     public record GetSupervisorQuery 
-    (int Id) : IRequest<Result<SupervisorResponse>>;
+    (string Id) : IRequest<Result<SupervisorResponse>>;
 }

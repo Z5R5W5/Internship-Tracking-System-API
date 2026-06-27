@@ -12,26 +12,29 @@ namespace Internship.Application.Features.Company.Queries.Get
 {
     public class GetCompanyHandler : IRequestHandler<GetCompanyQuery, Result<CompanyResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public GetCompanyHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public GetCompanyHandler(IIdentityService identityService)
         {
-            _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
-        public  async Task<Result<CompanyResponse>> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
+
+        public async Task<Result<CompanyResponse>> Handle(GetCompanyQuery request, CancellationToken cancellationToken)
         {
-            var company = await _unitOfWork.Repository<Domain.Models.Company>().GetByIdAsync(request.Id);
-            if (company == null)
+            var companyResult = await _identityService.GetUserByIdAsync(request.Id);
+            if (companyResult == null)
             {
                 return Result<CompanyResponse>.Failure("Company not found", 404);
             }
+            var company = companyResult.Value;
             var response = new CompanyResponse
             {
                 Id = company.Id,
-                Name = company.Name,
-                ContactEmail = company.ContactEmail,
-                Address = company.Address
+                FirstName = company.FirstName,
+                LastName = company.LastName,
+                DisplayName = company.DisplayName,
+                Email = company.Email
             };
-            return Result < CompanyResponse >.Success( response);
+            return Result<CompanyResponse>.Success(response);
         }
     }
 }

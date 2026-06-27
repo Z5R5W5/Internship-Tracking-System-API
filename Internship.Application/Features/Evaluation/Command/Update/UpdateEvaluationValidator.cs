@@ -25,8 +25,8 @@ namespace Internship.Application.Features.Evaluation.Command.Update
                 .LessThanOrEqualTo(DateTime.Now)
                 .WithMessage("Evaluation date cannot be in the future.");
             RuleFor(x => x.SupervisorId)
-                .GreaterThan(0)
-                .WithMessage("SupervisorId must be a positive integer.");
+                .NotNull()
+                .WithMessage("SupervisorId must requied.");
             RuleFor(x => x.InternshipOfferId)
                 .GreaterThan(0)
                 .WithMessage("InternshipOfferId must be a positive integer.");

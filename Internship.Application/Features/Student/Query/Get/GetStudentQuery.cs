@@ -10,5 +10,5 @@ using System.Threading.Tasks;
 namespace Internship.Application.Features.Student.Query.Get
 {
     public record GetStudentQuery
-    (int Id) : IRequest<Result<StudentResponse>>;
+    (string Id) : IRequest<Result<StudentResponse>>;
 }

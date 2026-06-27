@@ -1,6 +1,7 @@
 ﻿using Internship.Application.Interfaces;
 using Internship.Domain;
 using Internship.Infrastructure.Data;
+using Internship.Infrastructure.Identity;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,9 +14,9 @@ namespace Internship.Infrastructure
     public class UnitOfWork : IUnitOfWork
     {
 
-        private readonly InternshipDbContext _context;
+        private readonly AppDbContext _context;
         private Hashtable _repositories;
-        public UnitOfWork(InternshipDbContext context)
+        public UnitOfWork(AppDbContext context)
         {
             _context = context;
             _repositories = new Hashtable();

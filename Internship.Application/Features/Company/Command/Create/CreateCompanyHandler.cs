@@ -9,24 +9,16 @@ using System.Threading.Tasks;
 
 namespace Internship.Application.Features.Company.Command.Create
 {
-    public class CreateCompanyHandler : IRequestHandler<CreateCompanyCommand, Result<int>>
+    public class CreateCompanyHandler : IRequestHandler<CreateCompanyCommand, Result<string>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public CreateCompanyHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public CreateCompanyHandler(IIdentityService identityService)
         {
-            _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
-        public async Task<Result<int>> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
         {
-            var company = new Domain.Models.Company
-            {
-                Name = request.Name,
-                ContactEmail = request.ContactEmail,
-                Address = request.Address
-            };
-            await _unitOfWork.Repository<Domain.Models.Company>().AddAsync(company);
-            await _unitOfWork.CompleteAsync();
-            return Result<int>.Success(company.Id);
+            return await _identityService.RegisterAsync(request.FirstName, request.LastName, request.Email, request.Password, request.DisplayName, request.role);
         }
     }
 }

@@ -10,9 +10,13 @@ namespace Internship.Application.Features.Supervisor.Command.Update
 {
     public record UpdateSupervisorCommand
     (
-        int Id,
-        string FullName,
+        string Id,
+        string FirstName,
+        string LastName,
         string Email,
-        string Role,
-        int InternshipOfferId) : IRequest<Result>;
+        string Password,
+        string DisplayName,
+        string role,
+        int InternshipOfferId
+        ) : IRequest<Result<string>>;
 }

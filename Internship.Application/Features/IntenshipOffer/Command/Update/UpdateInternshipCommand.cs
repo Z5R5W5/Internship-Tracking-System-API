@@ -18,7 +18,7 @@ namespace Internship.Application.Features.IntenshipOffer.Command.Update
         bool IsActive,
         string Location,
         int RequiredStudentsCount,
-        int CompanyId
+        string CompanyId
 
     ) : IRequest<Result>;
 }

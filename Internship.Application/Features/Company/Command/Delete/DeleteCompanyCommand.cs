@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Internship.Application.Results;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Internship.Application.Features.Company.Command.Delete
 {
     public record DeleteCompanyCommand
     (
-        int Id
+        string Id
 
-     ) : IRequest<int>;
+     ) : IRequest<Result<string>>;
 }

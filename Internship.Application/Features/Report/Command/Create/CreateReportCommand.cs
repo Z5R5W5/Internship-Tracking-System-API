@@ -14,7 +14,7 @@ namespace Internship.Application.Features.Report.Command.Create
         string Content,
         DateTime SubmissionDate,
         string ReportType,
-        int StudentId 
+        string StudentId 
 
     ) :IRequest<Result<int>>;
 }

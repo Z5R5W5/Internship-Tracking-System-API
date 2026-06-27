@@ -12,26 +12,28 @@ namespace Internship.Application.Features.Company.Queries.List
 {
     public class ListCompaniesHandler : IRequestHandler<ListCompaniesQuery, Result<List<CompanyResponse>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public ListCompaniesHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService; 
+        public ListCompaniesHandler(IIdentityService identityService)
         {
-            _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
+
         public async Task<Result<List<CompanyResponse>>> Handle(ListCompaniesQuery request, CancellationToken cancellationToken)
         {
-            var companies = await _unitOfWork.Repository<Domain.Models.Company>().GetAllAsync();
-            if (companies == null || !companies.Any())
+            var companiesResult = await _identityService.GetUsersByRoleAsync("Company");
+            if (companiesResult == null )
             {
                 return Result<List<CompanyResponse>>.Failure("No companies found", 404);
             }
-            var response = companies.Select(company => new CompanyResponse
+            var response = companiesResult.Value.Select(company => new CompanyResponse
             {
                 Id = company.Id,
-                Name = company.Name,
-                ContactEmail = company.ContactEmail,
-                Address = company.Address
+                FirstName = company.FirstName,
+                LastName = company.LastName,
+                DisplayName = company.DisplayName,
+                Email = company.Email
             }).ToList();
-            return Result < List < CompanyResponse >>.Success( response);
+            return Result<List<CompanyResponse>>.Success(response);
         }
     }
 }

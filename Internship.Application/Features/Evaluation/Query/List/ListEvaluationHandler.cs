@@ -26,7 +26,7 @@ namespace Internship.Application.Features.Evaluation.Query.List
                 Score = evaluation.Score,
                 Comments = evaluation.Comments,
                 EvaluationDate = evaluation.EvaluationDate,
-                SupervisorName = evaluation.Supervisor.FullName,
+                SupervisorName = evaluation.Supervisor.DisplayName,
                 InternshipOfferTitle = evaluation.InternshipOffer.Title
             }).ToList();
             return Result < List < EvaluationResponse >>.Success( response);

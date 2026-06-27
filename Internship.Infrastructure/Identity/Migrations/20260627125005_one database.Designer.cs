@@ -4,6 +4,7 @@ using Internship.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Internship.Infrastructure.Identity.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260627125005_one database")]
+    partial class onedatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,9 +46,8 @@ namespace Internship.Infrastructure.Identity.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasDefaultValue("Pending");
 
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -54,6 +56,34 @@ namespace Internship.Infrastructure.Identity.Migrations
                     b.HasIndex("StudentId");
 
                     b.ToTable("applications");
+                });
+
+            modelBuilder.Entity("Internship.Domain.Models.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ContactEmail")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("companies");
                 });
 
             modelBuilder.Entity("Internship.Domain.Models.Evaluation", b =>
@@ -78,19 +108,12 @@ namespace Internship.Infrastructure.Identity.Migrations
                     b.Property<int>("Score")
                         .HasColumnType("int");
 
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("SupervisorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("SupervisorId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("InternshipOfferId");
-
-                    b.HasIndex("StudentId");
 
                     b.HasIndex("SupervisorId");
 
@@ -105,9 +128,8 @@ namespace Internship.Infrastructure.Identity.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CompanyId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -162,9 +184,8 @@ namespace Internship.Infrastructure.Identity.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasDefaultValue("Weekly");
 
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("StudentId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("SubmissionDate")
                         .HasColumnType("datetime2");
@@ -180,19 +201,86 @@ namespace Internship.Infrastructure.Identity.Migrations
                     b.ToTable("reports");
                 });
 
+            modelBuilder.Entity("Internship.Domain.Models.Student", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AcceptedInternshipId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Major")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UniversityId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AcceptedInternshipId");
+
+                    b.ToTable("Student");
+                });
+
+            modelBuilder.Entity("Internship.Domain.Models.Supervisor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("InternshipOfferId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("Academic");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InternshipOfferId");
+
+                    b.ToTable("supervisors");
+                });
+
             modelBuilder.Entity("Internship.Domain.Models.identity.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("AcceptedInternshipId")
-                        .HasColumnType("int");
-
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -209,20 +297,11 @@ namespace Internship.Infrastructure.Identity.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Major")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -246,9 +325,6 @@ namespace Internship.Infrastructure.Identity.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
-
-                    b.Property<string>("UniversityId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -408,10 +484,10 @@ namespace Internship.Infrastructure.Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Internship.Domain.Models.identity.AppUser", "Student")
+                    b.HasOne("Internship.Domain.Models.Student", "Student")
                         .WithMany("Applications")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("InternshipOffer");
@@ -427,31 +503,23 @@ namespace Internship.Infrastructure.Identity.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Internship.Domain.Models.identity.AppUser", "Student")
-                        .WithMany("ReceivedEvaluations")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Internship.Domain.Models.identity.AppUser", "Supervisor")
-                        .WithMany("GivenEvaluations")
+                    b.HasOne("Internship.Domain.Models.Supervisor", "Supervisor")
+                        .WithMany("EvaluationsGiven")
                         .HasForeignKey("SupervisorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("InternshipOffer");
 
-                    b.Navigation("Student");
-
                     b.Navigation("Supervisor");
                 });
 
             modelBuilder.Entity("Internship.Domain.Models.InternshipOffer", b =>
                 {
-                    b.HasOne("Internship.Domain.Models.identity.AppUser", "Company")
-                        .WithMany("CreatedOffers")
+                    b.HasOne("Internship.Domain.Models.Company", "Company")
+                        .WithMany("InternshipOffers")
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Company");
@@ -459,13 +527,33 @@ namespace Internship.Infrastructure.Identity.Migrations
 
             modelBuilder.Entity("Internship.Domain.Models.Report", b =>
                 {
-                    b.HasOne("Internship.Domain.Models.identity.AppUser", "Student")
+                    b.HasOne("Internship.Domain.Models.Student", "Student")
                         .WithMany("Reports")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("Internship.Domain.Models.Student", b =>
+                {
+                    b.HasOne("Internship.Domain.Models.InternshipOffer", "AcceptedInternship")
+                        .WithMany("AcceptedStudents")
+                        .HasForeignKey("AcceptedInternshipId");
+
+                    b.Navigation("AcceptedInternship");
+                });
+
+            modelBuilder.Entity("Internship.Domain.Models.Supervisor", b =>
+                {
+                    b.HasOne("Internship.Domain.Models.InternshipOffer", "InternshipOffer")
+                        .WithMany("Supervisors")
+                        .HasForeignKey("InternshipOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InternshipOffer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -519,24 +607,32 @@ namespace Internship.Infrastructure.Identity.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Internship.Domain.Models.Company", b =>
+                {
+                    b.Navigation("InternshipOffers");
+                });
+
             modelBuilder.Entity("Internship.Domain.Models.InternshipOffer", b =>
                 {
+                    b.Navigation("AcceptedStudents");
+
                     b.Navigation("Applications");
 
                     b.Navigation("Evaluations");
+
+                    b.Navigation("Supervisors");
                 });
 
-            modelBuilder.Entity("Internship.Domain.Models.identity.AppUser", b =>
+            modelBuilder.Entity("Internship.Domain.Models.Student", b =>
                 {
                     b.Navigation("Applications");
 
-                    b.Navigation("CreatedOffers");
-
-                    b.Navigation("GivenEvaluations");
-
-                    b.Navigation("ReceivedEvaluations");
-
                     b.Navigation("Reports");
+                });
+
+            modelBuilder.Entity("Internship.Domain.Models.Supervisor", b =>
+                {
+                    b.Navigation("EvaluationsGiven");
                 });
 #pragma warning restore 612, 618
         }

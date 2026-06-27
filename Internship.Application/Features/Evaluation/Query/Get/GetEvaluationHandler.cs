@@ -31,7 +31,7 @@ namespace Internship.Application.Features.Evaluation.Query.Get
                 Score = evaluation.Score,
                 Comments = evaluation.Comments,
                 EvaluationDate = evaluation.EvaluationDate,
-                SupervisorName = evaluation.Supervisor.FullName,
+                SupervisorName = evaluation.Supervisor.DisplayName,
                 InternshipOfferTitle = evaluation.InternshipOffer.Title
             };
             return Result < EvaluationResponse >.Success( response);

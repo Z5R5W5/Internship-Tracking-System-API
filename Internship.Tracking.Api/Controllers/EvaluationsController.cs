@@ -1,6 +1,7 @@
 ﻿using Internship.Application.Features.Evaluation.Command.Create;
 using Internship.Application.Features.Evaluation.Command.Delete;
 using Internship.Application.Features.Evaluation.Command.Update;
+using Internship.Application.Features.Evaluation.Dtos;
 using Internship.Application.Features.Evaluation.Query.Get;
 using Internship.Application.Features.Evaluation.Query.List;
 using Internship.Tracking.Api.Extentions;
@@ -19,12 +20,14 @@ namespace Internship.Tracking.Api.Controllers
             this.mediator = mediator;
         }
         [HttpGet]
+        [ProducesResponseType(typeof(List<EvaluationResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllEvaluations()
         {
             var results = await mediator.Send(new ListEvaluationsQuery());
             return results.ToActionResult(Ok);
         }
         [HttpGet("{Id}")]
+        [ProducesResponseType(typeof(EvaluationResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetEvaluationById(int Id)
         {
             var result = await mediator.Send(new GetEvaluationQuery(Id));

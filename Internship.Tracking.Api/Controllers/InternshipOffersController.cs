@@ -1,6 +1,7 @@
 ﻿using Internship.Application.Features.IntenshipOffer.Command.Create;
 using Internship.Application.Features.IntenshipOffer.Command.Delete;
 using Internship.Application.Features.IntenshipOffer.Command.Update;
+using Internship.Application.Features.IntenshipOffer.Dtos;
 using Internship.Application.Features.IntenshipOffer.Queries.Get;
 using Internship.Application.Features.IntenshipOffer.Queries.List;
 using Internship.Tracking.Api.Extentions;
@@ -36,6 +37,7 @@ namespace Internship.Tracking.Api.Controllers
         }
 
         [HttpGet("{Id}")]
+        [ProducesResponseType(typeof(InternshipResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetInternshipOfferById(int Id)
         {
             var query = new GetInternshipQuery(Id);
@@ -44,6 +46,7 @@ namespace Internship.Tracking.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<InternshipResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllInternshipOffers()
         {
             var query = new ListInternshipQueries();

@@ -24,7 +24,7 @@ namespace Internship.Application.Features.Report.Command.Update
                 .NotEmpty().WithMessage("Report type is required.")
                 .MaximumLength(50).WithMessage("Report type cannot exceed 50 characters.");
             RuleFor(x => x.StudentId)
-                .GreaterThan(0).WithMessage("StudentId must be a positive integer.");
+                .NotEmpty().WithMessage("StudentId must b.");
         }
     }
 }

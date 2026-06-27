@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Internship.Application.Results;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,5 +9,5 @@ using System.Threading.Tasks;
 namespace Internship.Application.Features.Supervisor.Command.Delete
 {
     public record DeleteSupervisorCommand
-    (int Id):IRequest<bool>;
+    (string Id):IRequest<Result<string>>;
 }

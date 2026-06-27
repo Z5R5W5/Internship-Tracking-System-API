@@ -9,18 +9,20 @@ namespace Internship.Application.Features.Company.Command.Create
 {
     public class CreateCompanyValidator : AbstractValidator<CreateCompanyCommand>
     {
-        public CreateCompanyValidator() 
+        public CreateCompanyValidator()
         {
-            RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Company name is required.")
-                .MaximumLength(100).WithMessage("Company name cannot exceed 100 characters.");
-            RuleFor(x => x.Address)
-                .NotEmpty().WithMessage("Company address is required.")
-                .MaximumLength(200).WithMessage("Company address cannot exceed 200 characters.");
-            RuleFor(x => x.ContactEmail)
-                .NotEmpty().WithMessage("Contact email is required.")
-                .EmailAddress().WithMessage("Contact email must be a valid email address.")
-                .MaximumLength(100).WithMessage("Contact email cannot exceed 100 characters.");
+            RuleFor(x => x.FirstName)
+                .NotEmpty().WithMessage("First name is required.")
+                .MaximumLength(50).WithMessage("First name cannot exceed 50 characters.");
+            RuleFor(x => x.LastName)
+                .NotEmpty().WithMessage("Last name is required.")
+                .MaximumLength(50).WithMessage("Last name cannot exceed 50 characters.");
+            RuleFor(x => x.Email)
+                .NotEmpty().WithMessage("Email is required.")
+                .EmailAddress().WithMessage("A valid email is required.")
+                .MaximumLength(100).WithMessage("Email cannot exceed 100 characters.");
+
         }
+            
     }
 }

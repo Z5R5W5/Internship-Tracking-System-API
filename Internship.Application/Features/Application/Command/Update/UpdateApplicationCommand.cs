@@ -13,7 +13,7 @@ namespace Internship.Application.Features.Application.Command.Update
         int Id,
         DateTime ApplicationDate,
         string Status,
-        int StudentId,
+        string StudentId,
         int InternshipOfferId
         ) :IRequest<Result>;
 

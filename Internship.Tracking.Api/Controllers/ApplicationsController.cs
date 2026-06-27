@@ -1,6 +1,7 @@
 ﻿using Internship.Application.Features.Application.Command.Create;
 using Internship.Application.Features.Application.Command.Delete;
 using Internship.Application.Features.Application.Command.Update;
+using Internship.Application.Features.Application.Dtos;
 using Internship.Application.Features.Application.Query.Get;
 using Internship.Application.Features.Application.Query.List;
 using Internship.Application.Results;
@@ -20,6 +21,7 @@ namespace Internship.Tracking.Api.Controllers
             _mediator = mediator;
         }
         [HttpGet]
+        [ProducesResponseType(typeof(List<ApplicationResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllApplications()
         {
             var query = new ListApplicationsQuery();
@@ -29,6 +31,7 @@ namespace Internship.Tracking.Api.Controllers
         }
 
         [HttpGet("{Id}")]
+        [ProducesResponseType(typeof(ApplicationResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetApplicationById(int Id)
         {
             var query = new GetApplicationQuery(Id);

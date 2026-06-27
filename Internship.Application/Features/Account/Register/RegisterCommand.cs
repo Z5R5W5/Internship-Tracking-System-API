@@ -11,9 +11,12 @@ namespace Internship.Application.Features.Account.Register
     public record RegisterCommand
         (
             string DisplayName,
+            string FirstName,
+            string LastName,
             string Email,
-            string Password
-        ):IRequest<Result<string>>;
+            string Password,
+            string Role
+        ) :IRequest<Result<string>>;
 
 
 }

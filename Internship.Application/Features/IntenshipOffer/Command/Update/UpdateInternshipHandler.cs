@@ -12,15 +12,17 @@ namespace Internship.Application.Features.IntenshipOffer.Command.Update
     public class UpdateInternshipHandler : IRequestHandler<UpdateInternshipCommand, Result>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public UpdateInternshipHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public UpdateInternshipHandler(IUnitOfWork unitOfWork, IIdentityService identityService)
         {
             _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
 
         public async Task<Result> Handle(UpdateInternshipCommand request, CancellationToken cancellationToken)
         {
             var internshipOffer = await _unitOfWork.Repository<Domain.Models.InternshipOffer>().GetByIdAsync(request.Id);
-            var company = await _unitOfWork.Repository<Domain.Models.Company>().GetByIdAsync(request.CompanyId);
+            var company = await _identityService.GetUserByIdAsync(request.CompanyId);
             if (company == null)
             {
                 return Result.Failure("Company not found.", 404);

@@ -14,7 +14,7 @@ namespace Internship.Application.Features.Evaluation.Command.Update
         int Score,
         string Comments,
         DateTime EvaluationDate,
-        int SupervisorId,
+        string SupervisorId,
         int InternshipOfferId
     ) : IRequest<Result>;
 }

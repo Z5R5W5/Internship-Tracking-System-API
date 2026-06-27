@@ -1,4 +1,5 @@
 ﻿using Internship.Application.Interfaces;
+using Internship.Application.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,24 +9,17 @@ using System.Threading.Tasks;
 
 namespace Internship.Application.Features.Student.Command.Delete
 {
-    public class DeleteStudentHandler : IRequestHandler<DeleteStudentCommand, bool>
+    public class DeleteStudentHandler : IRequestHandler<DeleteStudentCommand, Result<string>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public DeleteStudentHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public DeleteStudentHandler(IIdentityService identityService)
         {
-            _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
 
-        public async Task<bool> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
         {
-            var student = await _unitOfWork.Repository<Domain.Models.Student>().GetByIdAsync(request.Id);
-            if (student == null)
-            {
-                return false;
-            }
-            _unitOfWork.Repository<Domain.Models.Student>().Delete(student);
-            await _unitOfWork.CompleteAsync();
-            return true;
+            return await _identityService.DeleteUserAsync(request.Id);
         }
     }
 }

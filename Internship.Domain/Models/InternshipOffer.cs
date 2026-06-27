@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Internship.Domain.Models.identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,16 +17,20 @@ namespace Internship.Domain.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int RequiredStudentsCount { get; set; }
-        public bool IsActive { get; set; }        
-        public int CompanyId { get; set; }
-        public Company Company { get; set; } = null!;
+        public bool IsActive { get; set; }
+        // Company User
+        public string CompanyId { get; set; }= string.Empty;
+        public AppUser Company { get; set; }= null!;
 
-        public ICollection<Application> Applications { get; set; } = new List<Application>();
+        public ICollection<Application> Applications { get; set; }
+            = new List<Application>();
+
+
 
         public ICollection<Evaluation> Evaluations { get; set; } = new List<Evaluation>();
 
-        public ICollection<Supervisor> Supervisors { get; set; } = new List<Supervisor>();
+        //public ICollection<Supervisor> Supervisors { get; set; } = new List<Supervisor>();
 
-        public ICollection<Student> AcceptedStudents { get; set; } = new List<Student>();
+        //public ICollection<Student> AcceptedStudents { get; set; } = new List<Student>();
     }
 }

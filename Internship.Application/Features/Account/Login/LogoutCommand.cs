@@ -6,8 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Internship.Application.Features.Student.Command.Delete
+namespace Internship.Application.Features.Account.Login
 {
-    public record DeleteStudentCommand
-    (string Id):IRequest<Result<string>>;
+    public record LogoutCommand
+    (): IRequest<Result<string>>;
+    
 }

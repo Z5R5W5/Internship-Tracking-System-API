@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Internship.Domain.Models.identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,11 @@ namespace Internship.Domain.Models
         public int Id { get; set; }
         public DateTime ApplicationDate { get; set; }
         public string Status { get; set; } = "Pending"; // Pending, Accepted, Rejected
-        public int StudentId { get; set; }
-        public Student Student { get; set; } = null!;
+        // Student
+        public string StudentId { get; set; } = string.Empty;
+        public AppUser Student { get; set; }= null!;
+
+        // Offer
         public int InternshipOfferId { get; set; }
         public InternshipOffer InternshipOffer { get; set; } = null!;
     }

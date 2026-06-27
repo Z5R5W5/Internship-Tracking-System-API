@@ -27,7 +27,7 @@ namespace Internship.Application.Features.IntenshipOffer.Command.Create
                 .NotEmpty().WithMessage("End date is required.")
                 .GreaterThan(x => x.StartDate).WithMessage("End date must be after start date.");
             RuleFor(x => x.CompanyId)
-                .GreaterThan(0).WithMessage("CompanyId must be a positive integer.");
+                .NotNull().WithMessage("CompanyId must be a positive integer.");
         }
     }
 }

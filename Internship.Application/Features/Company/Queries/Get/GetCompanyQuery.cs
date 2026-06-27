@@ -11,6 +11,6 @@ namespace Internship.Application.Features.Company.Queries.Get
 {
     public record GetCompanyQuery
     (
-        int Id
+        string Id
     ) : IRequest<Result<CompanyResponse>>;
 }

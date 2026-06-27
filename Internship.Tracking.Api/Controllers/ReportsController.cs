@@ -1,6 +1,7 @@
 ﻿using Internship.Application.Features.Report.Command.Create;
 using Internship.Application.Features.Report.Command.Delete;
 using Internship.Application.Features.Report.Command.Update;
+using Internship.Application.Features.Report.Dtos;
 using Internship.Application.Features.Report.Query.Get;
 using Internship.Application.Features.Report.Query.List;
 using Internship.Tracking.Api.Extentions;
@@ -19,12 +20,14 @@ namespace Internship.Tracking.Api.Controllers
             this.mediator = mediator;
         }
         [HttpGet]
+        [ProducesResponseType(typeof(List<ReportResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllReports()
         {
             var results = await mediator.Send(new ListReportsQuery());
             return results.ToActionResult(Ok);
         }
         [HttpGet("{Id}")]
+        [ProducesResponseType(typeof(ReportResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetReportById(int Id)
         {
             var result = await mediator.Send(new GetReportQuery(Id));

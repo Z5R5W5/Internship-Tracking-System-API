@@ -20,7 +20,7 @@ namespace Internship.Application.Features.Application.Command.Update
                 .NotEmpty().WithMessage("Status is required.")
                 .MaximumLength(20).WithMessage("Status cannot exceed 20 characters.");
             RuleFor(x => x.StudentId)
-                .GreaterThan(0).WithMessage("StudentId must be a positive integer.");
+                .NotNull().WithMessage("StudentId Reqired.");
             RuleFor(x => x.InternshipOfferId)
                 .GreaterThan(0).WithMessage("InternshipOfferId must be a positive integer.");
         }

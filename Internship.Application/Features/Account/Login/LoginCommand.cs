@@ -11,6 +11,7 @@ namespace Internship.Application.Features.Account.Login
     public record LoginCommand
     (
          string Email ,
-         string Password
-    ):IRequest<Result<string>>;
+         string Password,
+         string Role
+    ) :IRequest<Result<string>>;
 }

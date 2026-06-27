@@ -15,10 +15,13 @@ namespace Internship.Application.Features.Student.Command.Create
         string UniversityId,
         string Major,
         string Email,
-        int? AcceptedInternshipId
+        int? AcceptedInternshipId,
+        string Password,
+        string DisplayName,
+        string role
 
 
-    ) : IRequest<Result<int>>;
+    ) : IRequest<Result<string>>;
 
 
 }
