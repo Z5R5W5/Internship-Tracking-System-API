@@ -16,7 +16,7 @@ namespace Internship.Application.Features.IntenshipOffer.Command.Create
         DateTime EndDate,
         string Location,
         int RequiredStudentsCount,
-        int CompanyId
+        string CompanyId
 
         ) :IRequest<Result<int>>;
 }

@@ -27,7 +27,7 @@ namespace Internship.Tracking.Api.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteCompany(int Id)
+        public async Task<IActionResult> DeleteCompany(string Id)
         {
             var command = new DeleteCompanyCommand(Id);
             var deletedCompanyId = await _mediator.Send(command);
@@ -43,7 +43,7 @@ namespace Internship.Tracking.Api.Controllers
         }
         [HttpGet("{Id}")]
         [ProducesResponseType(typeof(CompanyResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetCompanyById(int Id)
+        public async Task<IActionResult> GetCompanyById(string Id)
         {
             var query = new GetCompanyQuery(Id);
             var result = await _mediator.Send(query);
@@ -51,7 +51,7 @@ namespace Internship.Tracking.Api.Controllers
         }
 
         [HttpPut("{Id}")]
-        public async Task<IActionResult> UpdateCompany(int Id, [FromBody] UpdateCompanyCommand command)
+        public async Task<IActionResult> UpdateCompany(string Id, [FromBody] UpdateCompanyCommand command)
         {
             if (Id != command.Id)
             {

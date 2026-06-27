@@ -1,5 +1,6 @@
 ﻿using Internship.Application.Interfaces;
 using Internship.Infrastructure.Data;
+using Internship.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,8 @@ namespace Internship.Infrastructure
     public class GenaricRepository<T> : IGenaricRepository<T> where T : class
     {
 
-        private  readonly InternshipDbContext _context;
-        public GenaricRepository(InternshipDbContext context) 
+        private  readonly AppDbContext _context;
+        public GenaricRepository(AppDbContext context) 
         {
             _context = context;
         }

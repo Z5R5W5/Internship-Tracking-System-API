@@ -12,15 +12,17 @@ namespace Internship.Application.Features.Report.Command.Update
     public class UpdateReportHandler : IRequestHandler<UpdateReportCommand, Result>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public UpdateReportHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public UpdateReportHandler(IUnitOfWork unitOfWork, IIdentityService identityService)
         {
             _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
         public async Task<Result> Handle(UpdateReportCommand request, CancellationToken cancellationToken)
         {
 
             var report = await _unitOfWork.Repository<Domain.Models.Report>().GetByIdAsync(request.Id);
-            var student = await _unitOfWork.Repository<Domain.Models.Student>().GetByIdAsync(request.StudentId);
+            var student = await _identityService.GetUserByIdAsync(request.StudentId);
             if (student == null)
             {
                 return Result.Failure("Student not found.", 404);

@@ -9,26 +9,16 @@ using System.Threading.Tasks;
 
 namespace Internship.Application.Features.Company.Command.Update
 {
-    public class UpdateCompanyHandler : IRequestHandler<UpdateCompanyCommand, Result>
+    public class UpdateCompanyHandler : IRequestHandler<UpdateCompanyCommand, Result<string>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public UpdateCompanyHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public UpdateCompanyHandler(IIdentityService identityService)
         {
-            _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
-        public async Task<Result> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
         {
-            var company = await _unitOfWork.Repository<Domain.Models.Company>().GetByIdAsync(request.Id);
-            if (company == null)
-            {
-                return Result.Failure("Company not found.", 404);
-            }
-            company.Name = request.Name;
-            company.ContactEmail = request.ContactEmail;
-            company.Address = request.Address;
-            _unitOfWork.Repository<Domain.Models.Company>().Update(company);
-            await _unitOfWork.CompleteAsync();
-            return Result.Success();
+            return await _identityService.UpdateUserAsync(request.Id, request.FirstName, request.LastName, request.Email, request.Password, request.DisplayName, request.role);
         }
     }
 }

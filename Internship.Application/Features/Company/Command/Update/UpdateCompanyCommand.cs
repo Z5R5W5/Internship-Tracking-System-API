@@ -9,11 +9,15 @@ using System.Threading.Tasks;
 namespace Internship.Application.Features.Company.Command.Update
 {
     public record UpdateCompanyCommand
-    (
-        int Id,
-        string Name,
-        string ContactEmail,
-        string Address
+         (
+        string Id,
+        string FirstName,
+        string LastName,
+        string Email,
+        string Password,
+        string DisplayName,
+        string role
 
-    ) :IRequest<Result>;
+
+    ) : IRequest<Result<string>>;
 }

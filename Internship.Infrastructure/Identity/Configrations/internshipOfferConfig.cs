@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Internship.Infrastructure.Data.Configrations
+namespace Internship.Infrastructure.Identity.Configrations
 {
     public class internshipOfferConfig : IEntityTypeConfiguration<InternshipOffer>
     {
@@ -27,10 +27,14 @@ namespace Internship.Infrastructure.Data.Configrations
                 .IsRequired();
             builder.Property(io => io.EndDate)
                 .IsRequired();
-            builder.HasOne(io => io.Company)
-                .WithMany(c => c.InternshipOffers)
-                .HasForeignKey(io => io.CompanyId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(o => o.Company)
+                .WithMany(u => u.CreatedOffers)
+                .HasForeignKey(o => o.CompanyId)
+                .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasOne(io => io.Company)
+            //    .WithMany(c => c.InternshipOffers)
+            //    .HasForeignKey(io => io.CompanyId)
+            //    .OnDelete(DeleteBehavior.Cascade);
             builder.HasMany(io => io.Applications)
                 .WithOne(a => a.InternshipOffer)
                 .HasForeignKey(a => a.InternshipOfferId)

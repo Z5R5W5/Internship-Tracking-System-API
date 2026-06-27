@@ -47,6 +47,16 @@ namespace Internship.Tracking.Api.Controllers
             var result = await _mediator.Send(new GetCurrentUserQuery());
             return result.ToActionResult(Ok);
         }
+        //logout endpoint
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            var result = await _mediator.Send(new LogoutCommand());
+            return result.ToActionResult((message) => Ok(new { Message = message }));
+        }
+        
+
 
     }
 }

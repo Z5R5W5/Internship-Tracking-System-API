@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Internship.Infrastructure.Data.Configrations
+namespace Internship.Infrastructure.Identity.Configrations
 {
     public class ReportConfig : IEntityTypeConfiguration<Report>
     {
@@ -21,9 +21,11 @@ namespace Internship.Infrastructure.Data.Configrations
                 .IsRequired()
                 .HasMaxLength(20)
                 .HasDefaultValue("Weekly");
+            
             builder.HasOne(r => r.Student)
-                .WithMany(s => s.Reports)
-                .HasForeignKey(s => s.StudentId);
+                .WithMany(u => u.Reports)
+                .HasForeignKey(r => r.StudentId)
+                .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

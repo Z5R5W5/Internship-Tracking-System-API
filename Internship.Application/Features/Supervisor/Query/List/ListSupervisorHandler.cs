@@ -10,28 +10,35 @@ using System.Threading.Tasks;
 
 namespace Internship.Application.Features.Supervisor.Query.List
 {
+
     public class ListSupervisorHandler : IRequestHandler<ListSupervisorQueries, Result<List<SupervisorResponse>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public ListSupervisorHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public ListSupervisorHandler(IIdentityService identityService)
         {
-            _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
         public async Task<Result<List<SupervisorResponse>>> Handle(ListSupervisorQueries request, CancellationToken cancellationToken)
         {
-            var supervisors = await _unitOfWork.Repository<Domain.Models.Supervisor>().GetAllAsync();
-            if (supervisors == null || !supervisors.Any())
-            {
-                return Result<List<SupervisorResponse>>.Failure("No supervisors found", 404);
-            }
-            var response = supervisors.Select(supervisor => new SupervisorResponse
-            {
-                Id = supervisor.Id,
-                FullName = supervisor.FullName,
-                Email = supervisor.Email,
-                Role = supervisor.Role
-            }).ToList();
-            return Result < List < SupervisorResponse >>.Success( response);
+            var result = await _identityService.GetUsersByRoleAsync("Supervisor");
+
+            if (result.IsFailure)
+                return Result<List<SupervisorResponse>>
+                    .Failure("Not Found Supervisors");
+
+            var supervisorResponses = result.Value
+                .Select(s => new SupervisorResponse
+                {
+                    Id = s.Id,
+                    FirstName = s.FirstName,
+                    LastName = s.LastName,
+                    Email = s.Email,
+                    DisplayName = s.DisplayName
+                })
+                .ToList();
+
+            return Result<List<SupervisorResponse>>
+                .Success(supervisorResponses);
         }
     }
 }

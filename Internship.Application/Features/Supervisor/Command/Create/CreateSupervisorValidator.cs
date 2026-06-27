@@ -11,14 +11,14 @@ namespace Internship.Application.Features.Supervisor.Command.Create
     {
         public CreateSupervisorValidator() 
         {
-            RuleFor(x=>x.FullName)
+            RuleFor(x=>x.FirstName)
                 .NotEmpty().WithMessage("Full name is required.")
                 .MaximumLength(100).WithMessage("Full name cannot exceed 100 characters.");
             RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email is required.")
                 .EmailAddress().WithMessage("A valid email is required.")
                 .MaximumLength(100).WithMessage("Email cannot exceed 100 characters.");
-            RuleFor(x=>x.Role)
+            RuleFor(x=>x.role)
                 .NotEmpty().WithMessage("Role is required.")
                 .MaximumLength(50).WithMessage("Role cannot exceed 50 characters.");
             RuleFor(x=>x.InternshipOfferId)

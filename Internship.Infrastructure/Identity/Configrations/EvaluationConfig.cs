@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Internship.Infrastructure.Data.Configrations
+namespace Internship.Infrastructure.Identity.Configrations
 {
     public class EvaluationConfig : IEntityTypeConfiguration<Evaluation>
     {
@@ -22,8 +22,13 @@ namespace Internship.Infrastructure.Data.Configrations
             builder.Property(e => e.EvaluationDate)
                 .IsRequired();
             builder.HasOne(e => e.Supervisor)
-                .WithMany(s => s.EvaluationsGiven)
+                .WithMany(u => u.GivenEvaluations)
                 .HasForeignKey(e => e.SupervisorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(e => e.Student)
+                .WithMany(u => u.ReceivedEvaluations)
+                .HasForeignKey(e => e.StudentId)
                 .OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(e => e.InternshipOffer)
                 .WithMany(io => io.Evaluations)

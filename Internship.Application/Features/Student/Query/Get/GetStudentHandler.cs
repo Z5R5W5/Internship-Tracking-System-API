@@ -12,18 +12,19 @@ namespace Internship.Application.Features.Student.Query.Get
 {
     public class GetStudentHandler : IRequestHandler<GetStudentQuery, Result<StudentResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public GetStudentHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public GetStudentHandler(IIdentityService identityService)
         {
-            _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
         public async Task<Result<StudentResponse>> Handle(GetStudentQuery request, CancellationToken cancellationToken)
         {
-            var student = await _unitOfWork.Repository<Domain.Models.Student>().GetByIdAsync(request.Id);
-            if (student == null)
+            var studentResult = await _identityService.GetUserByIdAsync(request.Id);
+            if (studentResult == null)
             {
                 return Result<StudentResponse>.Failure("Student not found", 404);
             }
+            var student = studentResult.Value;
             var response = new StudentResponse
             {
                 Id = student.Id,
@@ -33,7 +34,8 @@ namespace Internship.Application.Features.Student.Query.Get
                 Major = student.Major,
                 Email = student.Email
             };
-            return Result < StudentResponse >.Success( response);
+            return Result<StudentResponse>.Success(response);
+
         }
     }
 }

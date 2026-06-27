@@ -6,6 +6,7 @@ using Internship.Application.Features.Supervisor.Query.Get;
 using Internship.Application.Features.Supervisor.Query.List;
 using Internship.Tracking.Api.Extentions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +20,7 @@ namespace Internship.Tracking.Api.Controllers
         {
             _mediator = mediator;
         }
-
+        [Authorize]
         [HttpGet]
         [ProducesResponseType(typeof(List<SupervisorResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllSupervisors()
@@ -31,7 +32,7 @@ namespace Internship.Tracking.Api.Controllers
 
         [HttpGet("{Id}")]
         [ProducesResponseType(typeof(SupervisorResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetSupervisorById(int Id)
+        public async Task<IActionResult> GetSupervisorById(string Id)
         {
             var query = new GetSupervisorQuery(Id);
             var result = await _mediator.Send(query);
@@ -47,14 +48,14 @@ namespace Internship.Tracking.Api.Controllers
         }
 
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteSupervisor(int Id)
+        public async Task<IActionResult> DeleteSupervisor(string Id)
         {
             var command = new DeleteSupervisorCommand(Id);
             var deletedSupervisor = await _mediator.Send(command);
             return Ok(deletedSupervisor);
         }
         [HttpPut("{Id}")]
-        public async Task<IActionResult> UpdateSupervisor(int Id, [FromBody] UpdateSupervisorCommand command)
+        public async Task<IActionResult> UpdateSupervisor(string Id, [FromBody] UpdateSupervisorCommand command)
         {
             if (Id != command.Id)
             {

@@ -10,9 +10,12 @@ namespace Internship.Application.Features.Supervisor.Command.Create
 {
     public record CreateSupervisorCommand
     (
-        string FullName,
+        string FirstName,
+        string LastName,
         string Email,
-        string Role,
+        string Password,
+        string DisplayName,
+        string role,
         int InternshipOfferId
-    ) : IRequest<Result<int>>;
+    ) : IRequest<Result<string>>;
 }

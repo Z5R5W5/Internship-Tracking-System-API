@@ -12,14 +12,16 @@ namespace Internship.Application.Features.Evaluation.Command.Update
     public class UpdateEvaluationHandler : IRequestHandler<UpdateEvaluationCommand, Result>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public UpdateEvaluationHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public UpdateEvaluationHandler(IUnitOfWork unitOfWork, IIdentityService identityService)
         {
             _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
         public async Task<Result> Handle(UpdateEvaluationCommand request, CancellationToken cancellationToken)
         {
             var evaluation = await _unitOfWork.Repository<Domain.Models.Evaluation>().GetByIdAsync(request.Id);
-            var supervisor = await _unitOfWork.Repository<Domain.Models.Supervisor>().GetByIdAsync(request.SupervisorId);
+            var supervisor = await _identityService.GetUserByIdAsync(request.SupervisorId);
             var internshipOffer = await _unitOfWork.Repository<Domain.Models.InternshipOffer>().GetByIdAsync(request.InternshipOfferId);
             if (supervisor == null)
             {

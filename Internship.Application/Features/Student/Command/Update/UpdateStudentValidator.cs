@@ -11,8 +11,7 @@ namespace Internship.Application.Features.Student.Command.Update
     public class UpdateStudentValidator : AbstractValidator<UpdateStudentCommand>
     {
         public UpdateStudentValidator() {
-            RuleFor(x => x.Id)
-                .GreaterThan(0).WithMessage("Id must be a positive integer.");  
+             
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("First name is required.")
                 .MaximumLength(50).WithMessage("First name cannot exceed 50 characters.");

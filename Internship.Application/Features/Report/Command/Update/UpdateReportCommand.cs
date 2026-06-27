@@ -15,6 +15,6 @@ namespace Internship.Application.Features.Report.Command.Update
         string Content,
         DateTime SubmissionDate,
         string ReportType,
-        int StudentId) : IRequest<Result>;
+        string StudentId) : IRequest<Result>;
 
 }

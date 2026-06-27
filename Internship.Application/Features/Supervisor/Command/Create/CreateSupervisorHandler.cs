@@ -1,5 +1,6 @@
 ﻿using Internship.Application.Interfaces;
 using Internship.Application.Results;
+using Internship.Domain.Models;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -9,27 +10,26 @@ using System.Threading.Tasks;
 
 namespace Internship.Application.Features.Supervisor.Command.Create
 {
-    public class CreateSupervisorHandler : IRequestHandler<CreateSupervisorCommand, Result<int>>
+    public class CreateSupervisorHandler : IRequestHandler<CreateSupervisorCommand, Result<string>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public CreateSupervisorHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public CreateSupervisorHandler(IIdentityService identityService)
         {
-            _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
-        public async Task<Result<int>> Handle(CreateSupervisorCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(CreateSupervisorCommand request, CancellationToken cancellationToken)
         {
-            var supervisor = new Domain.Models.Supervisor
-            {
-                FullName = request.FullName,
-                Email = request.Email,
-                Role = request.Role,
-                InternshipOfferId = request.InternshipOfferId
-            };
-            await  _unitOfWork.Repository<Domain.Models.Supervisor>().AddAsync(supervisor);
-            await _unitOfWork.CompleteAsync();
-            return Result<int>.Success( supervisor.Id);
-
-
+            return await _identityService.RegisterAsync(
+                request.FirstName,
+                request.LastName,
+                request.Email,
+                request.Password,
+                request.DisplayName,
+                request.role,
+                null, // universityId
+                null, // major
+                request.InternshipOfferId // internshipOfferId
+            );
         }
     }
 }

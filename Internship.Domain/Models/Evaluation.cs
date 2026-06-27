@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Internship.Domain.Models.identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,14 @@ namespace Internship.Domain.Models
         public string Comments { get; set; } = string.Empty;
         public DateTime EvaluationDate { get; set; }
 
-        public int SupervisorId { get; set; }
-        public Supervisor Supervisor { get; set; } = null!;
+        // Supervisor
+        public string SupervisorId { get; set; } = string.Empty;
+        public AppUser Supervisor { get; set; } = null!;
+
+        // Student
+        public string StudentId { get; set; } = string.Empty;
+        public AppUser Student { get; set; } = null!;
+        
         public int InternshipOfferId { get; set; }
         public InternshipOffer InternshipOffer { get; set; } = null!;
 

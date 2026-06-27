@@ -12,26 +12,35 @@ namespace Internship.Application.Features.Supervisor.Query.Get
 {
     public class GetSupervisorHandler : IRequestHandler<GetSupervisorQuery, Result<SupervisorResponse>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public GetSupervisorHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public GetSupervisorHandler(IIdentityService identityService)
         {
-            _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
+
         public async Task<Result<SupervisorResponse>> Handle(GetSupervisorQuery request, CancellationToken cancellationToken)
         {
-            var supervisor = await _unitOfWork.Repository<Domain.Models.Supervisor>().GetByIdAsync(request.Id);
-            if (supervisor == null)
+            var supervisorResult = await _identityService.GetUserByIdAsync(request.Id);
+
+            if (supervisorResult.IsFailure)
             {
-                return Result<SupervisorResponse>.Failure("Supervisor not found", 404);
+                return Result<SupervisorResponse>.Failure("Supervisor not found");
             }
+
+            var supervisor = supervisorResult.Value;
+
             var response = new SupervisorResponse
             {
                 Id = supervisor.Id,
-                FullName = supervisor.FullName,
+                FirstName = supervisor.FirstName,
+                LastName = supervisor.LastName,
                 Email = supervisor.Email,
-                Role = supervisor.Role
+                DisplayName = supervisor.DisplayName,
+                Role = "Supervisor",
+                InternshipOfferId = supervisor.AcceptedInternshipId
             };
-            return Result < SupervisorResponse >.Success( response);
+
+            return Result<SupervisorResponse>.Success(response);
         }
     }
 }

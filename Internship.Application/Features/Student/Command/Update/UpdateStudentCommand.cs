@@ -10,11 +10,14 @@ namespace Internship.Application.Features.Student.Command.Update
 {
     public record UpdateStudentCommand
     (
-        int Id,
+        string Id,
         string FirstName,
         string LastName,
         string UniversityId,
         string Major,
         string Email,
-        int? AcceptedInternshipId) : IRequest<Result>;
+        string Password,
+        string DisplayName,
+        string role,
+        int? AcceptedInternshipId) : IRequest<Result<string>>;
 }

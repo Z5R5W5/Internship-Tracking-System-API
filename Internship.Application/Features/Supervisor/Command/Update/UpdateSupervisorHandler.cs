@@ -9,34 +9,27 @@ using System.Threading.Tasks;
 
 namespace Internship.Application.Features.Supervisor.Command.Update
 {
-    public class UpdateSupervisorHandler : IRequestHandler<UpdateSupervisorCommand, Result>
+    public class UpdateSupervisorHandler : IRequestHandler<UpdateSupervisorCommand, Result<string>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public UpdateSupervisorHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public UpdateSupervisorHandler(IIdentityService identityService)
         {
-            _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
-        public async Task<Result> Handle(UpdateSupervisorCommand request, CancellationToken cancellationToken)
+        public Task<Result<string>> Handle(UpdateSupervisorCommand request, CancellationToken cancellationToken)
         {
-            var supervisor = await _unitOfWork.Repository<Domain.Models.Supervisor>().GetByIdAsync(request.Id);
-            var internshipOffer = await _unitOfWork.Repository<Domain.Models.InternshipOffer>().GetByIdAsync(request.InternshipOfferId);
-            if (internshipOffer == null)
-            {
-                return Result.Failure("Internship Offer not found.", 404);
-            }
-            if (supervisor == null)
-            {
-                return Result.Failure("Supervisor not found.", 404);
-            }
-            supervisor.FullName = request.FullName;
-            supervisor.Email = request.Email;
-            supervisor.Role = request.Role;
-            supervisor.InternshipOfferId = request.InternshipOfferId;
-
-            _unitOfWork.Repository<Domain.Models.Supervisor>().Update(supervisor);
-            await _unitOfWork.CompleteAsync();
-            return Result.Success();
-
+            return _identityService.UpdateUserAsync(
+                request.Id,
+                request.FirstName,
+                request.LastName,
+                request.Email,
+                request.Password,
+                request.DisplayName,
+                request.role,
+                null, // universityId
+                null, // major
+                request.InternshipOfferId
+                );
         }
     }
 }

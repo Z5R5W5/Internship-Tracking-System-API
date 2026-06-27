@@ -37,21 +37,21 @@ namespace Internship.Tracking.Api.Controllers
         }
         [HttpGet("{Id}")]
         [ProducesResponseType(typeof(StudentResponse), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetById(int Id)
+        public async Task<IActionResult> GetById(string Id)
         {
             var query = new GetStudentQuery(Id);
             var result = await _mediator.Send(query);
             return result.ToActionResult(Ok);
         }
         [HttpDelete("{Id}")]
-        public async Task<IActionResult> DeleteStudent(int Id)
+        public async Task<IActionResult> DeleteStudent(string Id)
         {
             var command = new DeleteStudentCommand(Id);
             var deletedStudentId = await _mediator.Send(command);
             return Ok(deletedStudentId);
         }
         [HttpPut("{Id}")]
-        public async Task<IActionResult>UpdateStudent(int Id, [FromBody] UpdateStudentCommand command)
+        public async Task<IActionResult>UpdateStudent(string Id, [FromBody] UpdateStudentCommand command)
         {
             if (Id != command.Id)
             {

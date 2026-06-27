@@ -10,18 +10,18 @@ namespace Internship.Application.Features.Company.Command.Update
     public class UpdateCompanyValidator : AbstractValidator<UpdateCompanyCommand>
     {
         public UpdateCompanyValidator() {
-            RuleFor(c => c.Id)
-                .GreaterThan(0).WithMessage("Company ID must be greater than zero.");
-            RuleFor(c => c.Name)
-                .NotEmpty().WithMessage("Company name is required.")
-                .MaximumLength(100).WithMessage("Company name must not exceed 100 characters.");
-            RuleFor(c => c.ContactEmail)
-                .NotEmpty().WithMessage("Contact email is required.")
-                .EmailAddress().WithMessage("A valid email address is required.")
-                .MaximumLength(100).WithMessage("Contact email must not exceed 100 characters.");
-            RuleFor(c => c.Address)
-                .NotEmpty().WithMessage("Address is required.")
-                .MaximumLength(200).WithMessage("Address must not exceed 200 characters.");
+            RuleFor(x => x.Id)
+                .NotEmpty().WithMessage("Id is required.");
+            RuleFor(x => x.FirstName)
+                .NotEmpty().WithMessage("First name is required.")
+                .MaximumLength(50).WithMessage("First name cannot exceed 50 characters.");
+            RuleFor(x => x.LastName)
+                .NotEmpty().WithMessage("Last name is required.")
+                .MaximumLength(50).WithMessage("Last name cannot exceed 50 characters.");
+            RuleFor(x => x.Email)
+                .NotEmpty().WithMessage("Email is required.")
+                .EmailAddress().WithMessage("A valid email is required.")
+                .MaximumLength(100).WithMessage("Email cannot exceed 100 characters.");
 
         }
     }

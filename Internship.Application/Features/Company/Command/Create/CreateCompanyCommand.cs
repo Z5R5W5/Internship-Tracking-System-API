@@ -9,9 +9,14 @@ using System.Threading.Tasks;
 namespace Internship.Application.Features.Company.Command.Create
 {
     public record CreateCompanyCommand
-    (
-        string Name,
-        string ContactEmail,
-        string Address
-    ) : IRequest<Result<int>>;
+     (
+        string FirstName,
+        string LastName,
+        string Email,
+        string Password,
+        string DisplayName,
+        string role
+
+
+    ) : IRequest<Result<string>>;
 }

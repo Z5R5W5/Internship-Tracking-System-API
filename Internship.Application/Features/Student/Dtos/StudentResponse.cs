@@ -8,7 +8,7 @@ namespace Internship.Application.Features.Student.Dtos
 {
     public class StudentResponse
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string UniversityId { get; set; } = string.Empty;

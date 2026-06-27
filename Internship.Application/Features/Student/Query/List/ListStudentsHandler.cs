@@ -12,31 +12,28 @@ namespace Internship.Application.Features.Student.Query.List
 {
     public class ListStudentsHandler : IRequestHandler<ListStudentQueries, Result<List<StudentResponse>>>
     {
-        private readonly IUnitOfWork _unitOfWork;
-        public ListStudentsHandler(IUnitOfWork unitOfWork)
+        private readonly IIdentityService _identityService;
+        public ListStudentsHandler(IIdentityService identityService)
         {
-            _unitOfWork = unitOfWork;
+            _identityService = identityService;
         }
-
         public async Task<Result<List<StudentResponse>>> Handle(ListStudentQueries request, CancellationToken cancellationToken)
         {
-            var students = await _unitOfWork.Repository<Domain.Models.Student>().GetAllAsync();
-            if (students == null || !students.Any())
+            var students = await _identityService.GetUsersByRoleAsync("Student");
+            if (students == null )
             {
-                return Result<List<StudentResponse>>.Failure("No students found", 404);
+                return Result<List<StudentResponse>>.Failure("No students found.");
             }
-            var Response = students.Select(student=> new StudentResponse
+            var studentResponses = students.Value.Select(s => new StudentResponse
             {
-                Id = student.Id,
-                FirstName = student.FirstName,
-                LastName = student.LastName,
-                UniversityId = student.UniversityId,
-                Major = student.Major,
-                Email = student.Email
-                
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                UniversityId = s.UniversityId,
+                Major = s.Major,
+                Email = s.Email
             }).ToList();
-            return Result < List < StudentResponse >>.Success( Response);
-             
+            return Result<List<StudentResponse>>.Success(studentResponses);
         }
     }
 }

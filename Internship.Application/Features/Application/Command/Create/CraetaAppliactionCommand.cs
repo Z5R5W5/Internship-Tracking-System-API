@@ -12,7 +12,7 @@ namespace Internship.Application.Features.Application.Command.Create
     (
          DateTime ApplicationDate,
          string Status,
-         int StudentId,
+         string StudentId,
          int InternshipOfferId
     ) : IRequest<Result<int>>;
 }

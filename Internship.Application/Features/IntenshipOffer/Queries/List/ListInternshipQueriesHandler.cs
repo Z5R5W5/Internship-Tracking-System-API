@@ -35,7 +35,7 @@ namespace Internship.Application.Features.IntenshipOffer.Queries.List
                 EndDate = internshipOffer.EndDate,
                 RequiredStudentsCount = internshipOffer.RequiredStudentsCount,
                 IsActive = internshipOffer.IsActive,
-                CompanyName = internshipOffer.Company.Name
+                CompanyName = internshipOffer.Company.DisplayName
             }).ToList();
             return Result < List < InternshipResponse >>.Success( response);
         }

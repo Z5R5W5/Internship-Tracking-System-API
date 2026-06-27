@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Internship.Domain.Models.identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,7 @@ namespace Internship.Domain.Models
         public DateTime SubmissionDate { get; set; }
         public string ReportType { get; set; } = "Weekly"; // Weekly, Monthly, Final
 
-        public int StudentId { get; set; }
-
-        public Student Student { get; set; } = null!;
+        public string StudentId { get; set; } = null!;
+        public AppUser Student { get; set; } = null!;
     }
 }

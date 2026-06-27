@@ -22,6 +22,8 @@ namespace Internship.Application.Features.Account.Register
         public async Task<Result<string>> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
             var result = await _identityService.RegisterAsync(
+                request.FirstName,
+                request.LastName,
                 request.Email,
                 request.Password,
                 request.DisplayName,
