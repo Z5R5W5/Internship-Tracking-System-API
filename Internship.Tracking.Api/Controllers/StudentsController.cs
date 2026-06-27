@@ -1,6 +1,7 @@
 ﻿using Internship.Application.Features.Student.Command.Create;
 using Internship.Application.Features.Student.Command.Delete;
 using Internship.Application.Features.Student.Command.Update;
+using Internship.Application.Features.Student.Dtos;
 using Internship.Application.Features.Student.Query.Get;
 using Internship.Application.Features.Student.Query.List;
 using Internship.Tracking.Api.Extentions;
@@ -27,6 +28,7 @@ namespace Internship.Tracking.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<StudentResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAll()
         {
             var query = new ListStudentQueries();
@@ -34,6 +36,7 @@ namespace Internship.Tracking.Api.Controllers
             return results.ToActionResult(Ok);
         }
         [HttpGet("{Id}")]
+        [ProducesResponseType(typeof(StudentResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetById(int Id)
         {
             var query = new GetStudentQuery(Id);

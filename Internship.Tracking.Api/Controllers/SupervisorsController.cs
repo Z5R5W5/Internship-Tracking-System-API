@@ -1,6 +1,7 @@
 ﻿using Internship.Application.Features.Supervisor.Command.Create;
 using Internship.Application.Features.Supervisor.Command.Delete;
 using Internship.Application.Features.Supervisor.Command.Update;
+using Internship.Application.Features.Supervisor.Dtos;
 using Internship.Application.Features.Supervisor.Query.Get;
 using Internship.Application.Features.Supervisor.Query.List;
 using Internship.Tracking.Api.Extentions;
@@ -20,6 +21,7 @@ namespace Internship.Tracking.Api.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(List<SupervisorResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllSupervisors()
         {
             var query = new ListSupervisorQueries();
@@ -28,6 +30,7 @@ namespace Internship.Tracking.Api.Controllers
         }
 
         [HttpGet("{Id}")]
+        [ProducesResponseType(typeof(SupervisorResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetSupervisorById(int Id)
         {
             var query = new GetSupervisorQuery(Id);

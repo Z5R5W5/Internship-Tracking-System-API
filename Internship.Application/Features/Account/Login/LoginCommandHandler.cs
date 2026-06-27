@@ -17,7 +17,7 @@ namespace Internship.Application.Features.Account.Login
         }
         public async Task<Result<string>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            return await _identityService.LoginAsync(request.Email, request.Password);
+            return await _identityService.LoginAsync(request.Email, request.Password,request.Role);
         }
     }
 }

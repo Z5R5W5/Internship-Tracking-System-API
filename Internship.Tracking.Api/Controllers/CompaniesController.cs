@@ -1,6 +1,7 @@
 ﻿using Internship.Application.Features.Company.Command.Create;
 using Internship.Application.Features.Company.Command.Delete;
 using Internship.Application.Features.Company.Command.Update;
+using Internship.Application.Features.Company.Dtos;
 using Internship.Application.Features.Company.Queries.Get;
 using Internship.Application.Features.Company.Queries.List;
 using Internship.Tracking.Api.Extentions;
@@ -33,6 +34,7 @@ namespace Internship.Tracking.Api.Controllers
             return Ok(deletedCompanyId);
         }
         [HttpGet]
+        [ProducesResponseType(typeof(List<CompanyResponse>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllCompanies()
         {
             var query = new ListCompaniesQuery();
@@ -40,6 +42,7 @@ namespace Internship.Tracking.Api.Controllers
             return results.ToActionResult(Ok);
         }
         [HttpGet("{Id}")]
+        [ProducesResponseType(typeof(CompanyResponse), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetCompanyById(int Id)
         {
             var query = new GetCompanyQuery(Id);

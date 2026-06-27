@@ -12,13 +12,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 
 namespace Internship.Tracking.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -80,10 +81,63 @@ namespace Internship.Tracking.Api
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            //builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Internship Tracking API",
+                    Version = "v1"
+                });
+
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter JWT Token"
+                });
+
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+                        });
             //builder.Services.AddOpenApi();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularApp",
+                    builder => builder
+                        .WithOrigins("http://localhost:4200") // Default Vite port
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials()
+                        .SetPreflightMaxAge(TimeSpan.FromMinutes(10))
+                        );
+            });
 
             var app = builder.Build();
+            using (var scope = app.Services.CreateScope())
+            {
+                var roleManager =
+                    scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+                await IdentityDbContextSeed.SeedRolesAsync(roleManager);
+                await IdentityDbContextSeed.SeedUsersAsync(
+                    scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>());
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -96,6 +150,7 @@ namespace Internship.Tracking.Api
             app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseHttpsRedirection();
+            app.UseCors("AllowAngularApp");
 
             app.UseAuthentication();
 

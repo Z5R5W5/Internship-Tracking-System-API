@@ -13,12 +13,15 @@ namespace Internship.Application.Interfaces
        Task<Result<string>> RegisterAsync(
            string email,
            string password,
-           string displayName
+           string displayName,
+           string role
         );
         Task<Result<string>> LoginAsync(
              string email,
-             string password
+             string password,
+             string role
          );
         Task<Result<List<UserResponseDto>>> GetAllUsersAsync();
+        Task<Result<UserResponseDto>> GetCurrentUserAsync();
     }
 }

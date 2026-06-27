@@ -24,7 +24,8 @@ namespace Internship.Application.Features.Account.Register
             var result = await _identityService.RegisterAsync(
                 request.Email,
                 request.Password,
-                request.DisplayName
+                request.DisplayName,
+                request.Role
                 );
             return result;
 

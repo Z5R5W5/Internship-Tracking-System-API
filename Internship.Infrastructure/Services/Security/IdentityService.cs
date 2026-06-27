@@ -35,13 +35,32 @@ namespace Internship.Infrastructure.Services.Security
                 Id = user.Id,
                 DisplayName = user.DisplayName,
                 Email = user.Email,
-                UserName = user.UserName
+                UserName = user.UserName,
+               
             }).ToListAsync();
             return  Result<List<UserResponseDto>>.Success(Users);
 
         }
 
-        public async Task<Result<string>> LoginAsync(string email, string password)
+        public async Task<Result<UserResponseDto>> GetCurrentUserAsync()
+        {
+            var user = await _userManager.GetUserAsync(_signInManager.Context.User);
+            if (user == null)
+            {
+                return Result<UserResponseDto>.Failure("User not found", 404);
+            }
+            return Result<UserResponseDto>.Success(new UserResponseDto
+            {
+                Id = user.Id,
+                DisplayName = user.DisplayName,
+                Email = user.Email,
+                UserName = user.UserName,
+            });
+
+        }
+
+
+        public async Task<Result<string>> LoginAsync(string email, string password, string role)
         {
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
@@ -53,6 +72,11 @@ namespace Internship.Infrastructure.Services.Security
             {
                 return Result<string>.Failure("Invalid email or password", 401);
             }
+                var userRoles = await _userManager.GetRolesAsync(user);
+            if (!userRoles.Contains(role))
+            {
+                return Result<string>.Failure("Unauthorized", 403);
+            }
             var token = await _tokenServices.CreateTokenAsync(user, _userManager);
             return Result<string>.Success(token);
         }
@@ -60,14 +84,15 @@ namespace Internship.Infrastructure.Services.Security
         public async  Task<Result<string>> RegisterAsync(
             string email,
             string password,
-            string displayName
+            string displayName,
+            string role
             )
         {
             var user = new AppUser
             {
                 UserName = email,
                 Email = email,
-                DisplayName = displayName
+                DisplayName = displayName,
             };
 
             var result = await _userManager.CreateAsync(user, password);
@@ -77,6 +102,8 @@ namespace Internship.Infrastructure.Services.Security
                 var errors = result.Errors.Select(e => e.Description);
                 return Result<string>.Failure(string.Join(", ", errors), 400);
             }
+            //add role to user
+            await _userManager.AddToRoleAsync(user, role);
 
             //await _userManager.AddToRoleAsync(user, role);
             var token = await _tokenServices.CreateTokenAsync(user, _userManager);

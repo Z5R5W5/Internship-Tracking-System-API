@@ -26,6 +26,7 @@ namespace Internship.Infrastructure.Services.Security
             {
                 new Claim(ClaimTypes.GivenName,user.DisplayName),
                 new Claim(ClaimTypes.Name,user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
             };
             var roles = await userManager.GetRolesAsync(user);
             Claims.AddRange(roles.Select(role=>new Claim(ClaimTypes.Role,role)));

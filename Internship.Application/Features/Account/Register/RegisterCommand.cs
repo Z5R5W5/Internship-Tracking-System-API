@@ -12,8 +12,9 @@ namespace Internship.Application.Features.Account.Register
         (
             string DisplayName,
             string Email,
-            string Password
-        ):IRequest<Result<string>>;
+            string Password,
+            string Role
+        ) :IRequest<Result<string>>;
 
 
 }
